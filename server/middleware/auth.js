@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import Admin from '../models/Admin.js';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'votre-secret-jwt-super-securise-changez-moi';
+const JWT_SECRET = process.env.JWT_SECRET || 'fdndfvsejcsdbdvbfsvfdflsvjaqehft';
 
 // Middleware d'authentification
 export const authenticate = async (req, res, next) => {
