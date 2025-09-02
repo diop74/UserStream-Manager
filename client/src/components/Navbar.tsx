@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Bell, User, Settings, LogOut } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -9,12 +9,34 @@ interface NavbarProps {
 
 export const Navbar: React.FC<NavbarProps> = ({ expiredCount, expiringThisWeek }) => {
   const { admin, logout } = useAuth();
+  const [showNotifications, setShowNotifications] = useState(false);
+  const notificationRef = useRef<HTMLDivElement>(null);
   const hasNotifications = expiredCount > 0 || expiringThisWeek > 0;
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (notificationRef.current && !notificationRef.current.contains(event.target as Node)) {
+        setShowNotifications(false);
+      }
+    };
+
+    if (showNotifications) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showNotifications]);
 
   const handleLogout = () => {
     if (window.confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
       logout();
     }
+  };
+
+  const toggleNotifications = () => {
+    setShowNotifications(!showNotifications);
   };
 
   return (
@@ -26,8 +48,11 @@ export const Navbar: React.FC<NavbarProps> = ({ expiredCount, expiringThisWeek }
         </div>
         
         <div className="flex items-center gap-4">
-          <div className="relative">
-            <button className="p-2 rounded-full hover:bg-gray-100 transition-colors duration-200 relative">
+          <div className="relative" ref={notificationRef}>
+            <button
+              onClick={toggleNotifications}
+              className="p-2 rounded-full hover:bg-gray-100 transition-colors duration-200 relative"
+            >
               <Bell size={20} className="text-gray-600" />
               {hasNotifications && (
                 <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
@@ -35,8 +60,8 @@ export const Navbar: React.FC<NavbarProps> = ({ expiredCount, expiringThisWeek }
                 </span>
               )}
             </button>
-            
-            {hasNotifications && (
+
+            {hasNotifications && showNotifications && (
               <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg border border-gray-200 p-4 z-50">
                 <h3 className="font-semibold text-gray-900 mb-2">Notifications</h3>
                 {expiredCount > 0 && (
