@@ -20,7 +20,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, onTabChange }) => {
       <div className="mb-8">
         <h1 className="text-white text-2xl font-bold flex items-center gap-2">
           <Video className="text-red-500" />
-          StreamAdmin
+          MoussaStream
         </h1>
         <p className="text-gray-400 text-sm mt-1">Gestion des abonnements</p>
       </div>
@@ -49,7 +49,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, onTabChange }) => {
       
       <div className="mt-8 p-4 bg-gray-800 rounded-lg">
         <p className="text-gray-400 text-xs mb-2">Version</p>
-        <p className="text-white font-semibold">StreamAdmin v1.0</p>
+        <p className="text-white font-semibold">MoussaStream v2.0</p>
       </div>
     </div>
   );
