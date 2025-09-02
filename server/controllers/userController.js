@@ -28,10 +28,10 @@ export const getUserById = async (req, res) => {
 // Créer un nouvel utilisateur
 export const createUser = async (req, res) => {
   try {
-    const { name, email, service, validityMonths } = req.body;
+    const { name, email, service, validityMonths, subscriptionDate } = req.body;
 
     // Validation des données
-    if (!name || !email || !service || !validityMonths) {
+    if (!name || !email || !service || !validityMonths || !subscriptionDate) {
       return res.status(400).json({ error: 'Tous les champs sont requis' });
     }
 
@@ -46,7 +46,7 @@ export const createUser = async (req, res) => {
       email,
       service,
       validityMonths,
-      subscriptionDate: new Date()
+      subscriptionDate: new Date(subscriptionDate)
     };
 
     const user = new User(userData);
@@ -65,7 +65,7 @@ export const createUser = async (req, res) => {
 // Mettre à jour un utilisateur
 export const updateUser = async (req, res) => {
   try {
-    const { name, email, service, validityMonths } = req.body;
+    const { name, email, service, validityMonths, subscriptionDate } = req.body;
     const userId = req.params.id;
 
     // Vérifier si l'utilisateur existe
@@ -87,6 +87,7 @@ export const updateUser = async (req, res) => {
     if (email) updateData.email = email;
     if (service) updateData.service = service;
     if (validityMonths) updateData.validityMonths = validityMonths;
+    if (subscriptionDate) updateData.subscriptionDate = new Date(subscriptionDate);
 
     const user = await User.findByIdAndUpdate(userId, updateData, { 
       new: true, 

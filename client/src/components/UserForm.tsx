@@ -14,7 +14,8 @@ export const UserForm: React.FC<UserFormProps> = ({ user, isOpen, onClose, onSav
     name: '',
     email: '',
     service: 'Netflix' as 'Netflix' | 'PrimeVideo',
-    validityMonths: 1
+    validityMonths: 1,
+    subscriptionDate: new Date().toISOString().split('T')[0] // Default to today
   });
 
   useEffect(() => {
@@ -23,14 +24,16 @@ export const UserForm: React.FC<UserFormProps> = ({ user, isOpen, onClose, onSav
         name: user.name,
         email: user.email,
         service: user.service,
-        validityMonths: user.validityMonths
+        validityMonths: user.validityMonths,
+        subscriptionDate: new Date(user.subscriptionDate).toISOString().split('T')[0]
       });
     } else {
       setFormData({
         name: '',
         email: '',
         service: 'Netflix',
-        validityMonths: 1
+        validityMonths: 1,
+        subscriptionDate: new Date().toISOString().split('T')[0]
       });
     }
   }, [user]);
@@ -111,6 +114,19 @@ export const UserForm: React.FC<UserFormProps> = ({ user, isOpen, onClose, onSav
               max="24"
               value={formData.validityMonths}
               onChange={(e) => setFormData({ ...formData, validityMonths: parseInt(e.target.value) })}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Date d'inscription
+            </label>
+            <input
+              type="date"
+              value={formData.subscriptionDate}
+              onChange={(e) => setFormData({ ...formData, subscriptionDate: e.target.value })}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               required
             />

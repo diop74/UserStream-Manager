@@ -26,8 +26,7 @@ const userSchema = new mongoose.Schema({
   },
   subscriptionDate: {
     type: Date,
-    required: [true, 'La date d\'inscription est requise'],
-    default: Date.now
+    required: [true, 'La date d\'inscription est requise']
   },
   validityMonths: {
     type: Number,
